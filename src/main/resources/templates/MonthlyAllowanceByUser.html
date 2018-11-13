@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<title>Student List</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css"
+		  th:href="@{/css/bootstrap.min.css}">
+
+	<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+</head>
+
+
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-4"></div>
+		<div class="col-xs-4" align="center">
+			<img th:if="${company.logo != null}"
+				 th:src="@{${base_location+company.logo.url}}"
+				 style="max-width: 100%; height: 37px;" title="TODO" />
+		</div>
+		<div class="col-xs-4"></div>
+		<!--  -->
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<table class="table table-bordered">
+				<tbody>
+				<tr>
+					<td>NAME</td>
+					<td
+							th:text="${user.basicInfo.firstName} + ' ' + ${user.basicInfo.middleName} + ' ' + ${user.basicInfo.lastName}"></td>
+				</tr>
+				<tr>
+					<td>DESIGNATION</td>
+					<td th:text="${user.professionalInfo.designation}"></td>
+				</tr>
+				<tr>
+					<td>OFFICE CODE</td>
+					<td th:text="${user.officeCode.code}"></td>
+				</tr>
+				<tr>
+					<td>DATE</td>
+					<td th:text="${#dates.format(dateOfCreation, 'dd-MMM-yyyy')}"></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-xs-4">
+			<h5 style="text-align: center;">
+				<span th:text="${company.name}"></span>
+			</h5>
+			<h5 style="text-align: center;">MONTHLY EXPENSES BILL</h5>
+		</div>
+		<div class="col-xs-4">
+			<table class="table table-bordered">
+				<tbody>
+				<tr>
+					<td>MONTH</td>
+					<td th:text="${month}"></td>
+				</tr>
+				<tr>
+					<td>YEAR</td>
+					<td th:text="${year}"></td>
+				</tr>
+				<tr>
+					<td>BDT</td>
+					<td class="total-sum"></td>
+				</tr>
+				<tr>
+					<td>GRADE</td>
+					<td th:text="${user.grade.title}"></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<table class="table table-bordered" id="allownce-list">
+		<thead>
+		<tr>
+			<th rowspan="2">Date</th>
+			<th rowspan="2">Institution and Locations</th>
+			<th colspan="3">Allowance</th>
+
+			<th rowspan="2">Hotel Fare</th>
+			<th rowspan="2">Transport(with Ticket)</th>
+			<th colspan="2">Internal Transport</th>
+			<!-- <th>Internal Transport Fare</th> -->
+			<th rowspan="2">Total</th>
+			<th rowspan="2">Remarks</th>
+
+			<!-- <th>Qty/unit</th> -->
+			<!-- <th>Rate per BDT</th>
+
+
+                                             -->
+
+		</tr>
+		<tr>
+			<th>HQ</th>
+			<th>EX Hq</th>
+			<th>O/S</th>
+			<th>Mode</th>
+			<th>Fare</th>
+
+		</tr>
+		</thead>
+		<!-- <tbody
+                                                th:if="${#lists.isEmpty(requestAllowanceList.content)}">
+                                                <tr>
+
+                                                    <td colspan="11" style="text-align: center">No
+                                                        Requests to show</td>
+                                                </tr>
+
+                                            </tbody> -->
+		<tbody th:each="allowance,stat: ${myAllowancesSummary}">
+		<tr th:if="${allowance.myofficeHour != null}">
+			<td th:text="${stat.count}">No.</td>
+			<td th:text="${allowance.myofficeHour.dayName}" style="color: red"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+		</tr>
+
+		<tr th:if="${allowance.myholiday != null}">
+			<td th:text="${stat.count}">No.</td>
+			<td th:text="${allowance.myholiday.description}" style="color: red"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+
+		</tr>
+		<tr th:if="${allowance.myleaves != null}">
+
+			<td th:text="${stat.count}">No.</td>
+			<td th:text="${allowance.myleaves.leaveType}"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+
+
+		</tr>
+
+
+
+
+		<tr
+				th:if="${allowance.myallowanceDay != null and allowance.colorcode!= null}">
+			<td th:text="${stat.count}">No.</td>
+			<td th:text="${allowance.myallowanceDay.destination}"></td>
+
+			<td th:text="${allowance.myallowanceDay.hq}"></td>
+			<td th:text="${allowance.myallowanceDay.exHq}"></td>
+			<td th:text="${allowance.myallowanceDay.os}"></td>
+			<td th:text="${allowance.myallowanceDay.hotelFare}"></td>
+			<td th:text="${allowance.myallowanceDay.transportWithTicket}"></td>
+			<td th:text="${allowance.myallowanceDay.internalMode}"></td>
+			<td th:text="${allowance.myallowanceDay.internalFare}"></td>
+			<td class="total"></td>
+			<td th:text="${allowance.myallowanceDay.remarks}"></td>
+			<!-- <td th:if="${allowance.myallowanceDay.summaryId != null}" th:text="${allowance.myallowanceDay.summaryId}"></td>  -->
+
+
+
+		</tr>
+		<tr
+				th:if="${allowance.myallowanceDay != null and allowance.colorcode == null}"
+				style="color: red">
+			<td th:text="${stat.count}">No.</td>
+			<td th:text="${allowance.myallowanceDay.destination}"></td>
+
+			<td th:text="${allowance.myallowanceDay.hq}"></td>
+			<td th:text="${allowance.myallowanceDay.exHq}"></td>
+			<td th:text="${allowance.myallowanceDay.os}"></td>
+			<td th:text="${allowance.myallowanceDay.hotelFare}"></td>
+			<td th:text="${allowance.myallowanceDay.transportWithTicket}"></td>
+			<td th:text="${allowance.myallowanceDay.internalMode}"></td>
+			<td th:text="${allowance.myallowanceDay.internalFare}"></td>
+			<td class="total"></td>
+			<td th:text="${allowance.myallowanceDay.remarks}"></td>
+			<!-- <td th:if="${allowance.myallowanceDay.summaryId != null}" th:text="${allowance.myallowanceDay.summaryId}"></td>  -->
+
+		</tr>
+
+
+
+
+
+		<tr
+				th:if="${allowance.myallowanceDay == null and allowance.myofficeHour == null and allowance.myleaves==null and allowance.myholiday==null }">
+			<td th:text="${stat.count}">No.</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+
+		</tr>
+
+
+		</tbody>
+		<tfoot>
+		<tr>
+			<td></td>
+			<td colspan="8" style="text-align: center"><b>Total:</b></td>
+			<td><span class="total-sum"></span></td>
+			<!-- <td><span th:if="${approveSummaryDto.total != 0}"
+        style="color: red"> <span
+            th:text="${approveSummaryDto.total}"></span>&nbsp (Previous
+            Approved Total)
+    </span> <br /> <span class="total-sum"></span></td> -->
+			<td></td>
+
+
+
+		</tr>
+		<tr>
+			<td>In Words</td>
+			<td colspan="10"><b class="in-word"></b></td>
+
+
+
+
+		</tr>
+
+		</tfoot>
+
+	</table>
+
+	<div class="row">
+		<div class="col-xs-4">
+			<br />
+			<hr />
+			Signature
+		</div>
+		<div class="col-xs-4"></div>
+		<div class="col-xs-4">
+			<br />
+			<hr />
+			Approved By
+		</div>
+	</div>
+	<!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+</div>
+</body>
+<style>
+	td, th {
+		font-size: 10px;
+		text-align: center;
+	}
+</style>
+<script>
+    var a = [ '', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ',
+        'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ',
+        'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ',
+        'Nineteen ' ];
+    var b = [ '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy',
+        'Eighty', 'Ninety' ];
+
+    function inWords(num) {
+        var substring = 'Only';
+        if ((num = num.toString()).length > 9)
+            return 'overflow';
+        n = ('000000000' + num).substr(-9).match(
+            /^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n)
+            return;
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]])
+            + 'Crore  ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]])
+            + 'Lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]])
+            + 'Thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]])
+            + 'Hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '')
+            + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only '
+            : '';
+
+        return str;
+    }
+    function ReplaceNumberWithCommas(yourNumber) {
+        //Seperates the components of the number
+        var n = yourNumber.toString().split(".");
+        //Comma-fies the first part
+        n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //Combines the two sections
+        return n.join(".");
+    }
+
+    function calTotalNew() {
+        var sum = 0;
+        sum = parseFloat(sum);
+        // iterate through each td based on class and add the values
+        $(".total").each(function() {
+
+            var value = $(this).text();
+            // add only if the value is number
+            if (!isNaN(value) && value.length != 0) {
+                sum += parseFloat(value);
+            }
+        });
+        $('.in-word').text(inWords(sum));
+        //$('.total-sum-val').val(sum);
+        sum = ReplaceNumberWithCommas(sum);
+        //$('.lga').text(sum);
+        $('.total-sum').text(sum);
+
+    }
+
+    $("#allownce-list tbody tr").each(function() {
+        var totalsum = 0;
+        var $hq = parseFloat($(this).find('td:eq(2)').text());
+        var $exhq = parseFloat($(this).find('td:eq(3)').text());
+        var $os = parseFloat($(this).find('td:eq(4)').text());
+        var $hotelfare = parseFloat($(this).find('td:eq(5)').text());
+        var $transportwithticket = parseFloat($(this).find('td:eq(6)').text());
+        var $transportfare = parseFloat($(this).find('td:eq(8)').text());
+
+        var $totaltd = $(this).find('td:eq(9)');
+        if (!isNaN($hq)) {
+            totalsum += $hq;
+        }
+        if (!isNaN($exhq)) {
+            totalsum += $exhq;
+        }
+
+        if (!isNaN($os)) {
+            totalsum += $os;
+        }
+        if (!isNaN($hotelfare)) {
+            totalsum += $hotelfare;
+        }
+        if (!isNaN($transportwithticket)) {
+            totalsum += $transportwithticket;
+        }
+        if (!isNaN($transportfare)) {
+            totalsum += $transportfare;
+        }
+
+        $totaltd.text(totalsum);
+
+    })
+    calTotalNew();
+</script>
+
+
+</html>

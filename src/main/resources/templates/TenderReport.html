@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Student List</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+
+    <!--<div class="row">-->
+    <!--<div class="col-xs-4"></div>-->
+
+    <!--<div class="col-xs-4" align="center">-->
+
+    <!--<img th:if="${company.logo != null}"  th:src="@{${base_location+company.logo.url}}"-->
+    <!--style="max-width: 100%; height: auto;" title="TODO" />-->
+    <!--</div>-->
+    <!--<div class="col-xs-4"></div>-->
+
+
+    <!--</div>-->
+    <h1 style="text-align: center;">Tenders</h1>
+    <!--<h2 style="text-align: center;">-->
+    <!--<span th:text="${companyName}"></span>-->
+    <!--</h2>-->
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>DATE</td>
+                    <td th:text="${#dates.format(dateCreated, 'dd-MMM-yyyy')}"></td>
+                </tr>
+                <tr>
+                    <td>TOTAL TENDERS</td>
+                    <td th:text="${totalTenders}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Institution Name</th>
+            <th>MR Code</th>
+            <th>Type of Tender</th>
+            <th>E-Tender ID</th>
+            <th>Tender Lot Number</th>
+            <th>Cost of Tender Schedule in Tk.</th>
+            <th>Total Tender Value in Tk.</th>
+            <th>Type of Tender Security</th>
+            <th>Amount of Tender Security in Tk.</th>
+            <th>Copy of Tender Security in File</th>
+            <th>Issue Date of Tender Security</th>
+            <th>Tender Security Release Date</th>
+            <th>Type of Performance Security</th>
+            <th>Amount of Performance Security in Tk.</th>
+            <th>Copy of Performance Security in File</th>
+            <th>Issue Date of Performance Security</th>
+            <th>Performance Security Release Date</th>
+            <th>Tender Status</th>
+        </tr>
+        <tr th:each="tender : ${tenderResponse}"
+            th:if="${tender.status == 'Decision Pending'}">
+            <td th:text="${tender.institutionName}"></td>
+            <td th:text="${tender.mrCode}"></td>
+            <td th:text="${tender.typeOfTender}"></td>
+            <td th:text="${tender.eTenderId}"></td>
+            <td th:text="${tender.tenderLotNumber}"></td>
+            <td th:text="${tender.costOfTenderSchedule}"></td>
+            <td th:text="${tender.totalTenderValue}"></td>
+            <td th:text="${tender.typeOfTenderSecurity}"></td>
+            <td><span th:text="${tender.amountOfTenderSecurity}"></span>
+                &nbsp <span th:if="${tender.tenderSecurityStatus == 'Release'}"
+                            th:text="${tender.tenderSecurityStatus}" style="color: red"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Released'}"
+                      th:text="${tender.tenderSecurityStatus}" style="color: blue"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Decision Pending'}"
+                      th:text="${tender.tenderSecurityStatus}"></span></td>
+            <td><span th:if="${tender.copyOfTenderSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfTenderSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+            <td
+                    th:text="${#dates.format(tender.issueDateOfTenderSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.tenderSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+
+            <td th:text="${tender.typeOfPerformanceSecurity}"></td>
+            <td th:text="${tender.amountOfPerformanceSecurity}"></td>
+            <td><span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+            <td
+                    th:text="${#dates.format(tender.issueDateOfPerformanceSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.performanceSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.tenderStatus}"></td>
+        </tr>
+
+
+        <tr th:each="tender : ${tenderResponse}"
+            th:if="${tender.status == 'Received Work'}"
+            style="background-color: #B2FF59">
+            <td th:text="${tender.institutionName}"></td>
+            <td th:text="${tender.mrCode}"></td>
+            <td th:text="${tender.typeOfTender}"></td>
+            <td th:text="${tender.eTenderId}"></td>
+            <td th:text="${tender.tenderLotNumber}"></td>
+            <td th:text="${tender.costOfTenderSchedule}"></td>
+            <td th:text="${tender.totalTenderValue}"></td>
+            <td th:text="${tender.typeOfTenderSecurity}"></td>
+            <td><span th:text="${tender.amountOfTenderSecurity}"></span>
+                &nbsp <span th:if="${tender.tenderSecurityStatus == 'Release'}"
+                            th:text="${tender.tenderSecurityStatus}" style="color: red"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Released'}"
+                      th:text="${tender.tenderSecurityStatus}" style="color: blue"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Decision Pending'}"
+                      th:text="${tender.tenderSecurityStatus}"></span></td>
+            <td><span th:if="${tender.copyOfTenderSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfTenderSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+            <td
+                    th:text="${#dates.format(tender.issueDateOfTenderSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.tenderSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.typeOfPerformanceSecurity}"></td>
+            <td th:text="${tender.amountOfPerformanceSecurity}"></td>
+            <td><span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+            <td
+                    th:text="${#dates.format(tender.issueDateOfPerformanceSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.performanceSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.tenderStatus}"></td>
+        </tr>
+        <tr th:each="tender : ${tenderResponse}"
+            th:if="${tender.status == 'BG or P/O Cleared'}"
+            style="background-color: #E0E0E0">
+            <td th:text="${tender.institutionName}"></td>
+            <td th:text="${tender.mrCode}"></td>
+            <td th:text="${tender.typeOfTender}"></td>
+            <td th:text="${tender.eTenderId}"></td>
+            <td th:text="${tender.tenderLotNumber}"></td>
+            <td th:text="${tender.costOfTenderSchedule}"></td>
+            <td th:text="${tender.totalTenderValue}"></td>
+            <td th:text="${tender.typeOfTenderSecurity}"></td>
+            <td><span th:text="${tender.amountOfTenderSecurity}"></span>
+                &nbsp <span th:if="${tender.tenderSecurityStatus == 'Release'}"
+                            th:text="${tender.tenderSecurityStatus}" style="color: red"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Released'}"
+                      th:text="${tender.tenderSecurityStatus}" style="color: blue"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Decision Pending'}"
+                      th:text="${tender.tenderSecurityStatus}"></span></td>
+            <td><span th:if="${tender.copyOfTenderSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfTenderSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+            <td
+                    th:text="${#dates.format(tender.issueDateOfTenderSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.tenderSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.typeOfPerformanceSecurity}"></td>
+            <td th:text="${tender.amountOfPerformanceSecurity}"></td>
+            <td><span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+
+
+            <td
+                    th:text="${#dates.format(tender.issueDateOfPerformanceSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.performanceSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.tenderStatus}"></td>
+        </tr>
+
+        <tr th:each="tender : ${tenderResponse}"
+            th:if="${tender.status == 'BG or P/O NOT Cleared'}"
+            style="background-color: #ef9a9a">
+            <td th:text="${tender.institutionName}"></td>
+            <td th:text="${tender.mrCode}"></td>
+            <td th:text="${tender.typeOfTender}"></td>
+            <td th:text="${tender.eTenderId}"></td>
+            <td th:text="${tender.tenderLotNumber}"></td>
+            <td th:text="${tender.costOfTenderSchedule}"></td>
+            <td th:text="${tender.totalTenderValue}"></td>
+            <td th:text="${tender.typeOfTenderSecurity}"></td>
+            <td><span th:text="${tender.amountOfTenderSecurity}"></span>
+                &nbsp <span th:if="${tender.tenderSecurityStatus == 'Release'}"
+                            th:text="${tender.tenderSecurityStatus}" style="color: red"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Released'}"
+                      th:text="${tender.tenderSecurityStatus}" style="color: blue"></span>
+                <span th:if="${tender.tenderSecurityStatus == 'Decision Pending'}"
+                      th:text="${tender.tenderSecurityStatus}"></span></td>
+            <td><span th:if="${tender.copyOfTenderSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfTenderSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+            <td
+                    th:text="${#dates.format(tender.issueDateOfTenderSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.tenderSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.typeOfPerformanceSecurity}"></td>
+            <td th:text="${tender.amountOfPerformanceSecurity}"></td>
+            <td><span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == true}"><input
+                    type="checkbox" checked="checked" disabled="disabled"></span> <span
+                    th:if="${tender.copyOfPerformanceSecurityInFile == false}"><input
+                    type="checkbox" disabled="disabled"></span></td>
+
+
+
+
+            <td
+                    th:text="${#dates.format(tender.issueDateOfPerformanceSecurity, 'dd-MMM-yyyy')}"></td>
+            <td
+                    th:text="${#dates.format(tender.performanceSecurityReleaseDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${tender.tenderStatus}"></td>
+        </tr>
+    </table>
+    <!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+</div>
+</body>
+</html>

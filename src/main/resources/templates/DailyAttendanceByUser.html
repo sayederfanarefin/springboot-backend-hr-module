@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Student List</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4"></div>
+
+        <div class="col-xs-4" align="center">
+
+            <img th:if="${company.logo != null}"  th:src="@{${base_location+company.logo.url}}"
+                 style="max-width: 100%; height: auto;" title="TODO" />
+        </div>
+        <div class="col-xs-4"></div>
+
+
+    </div>
+
+    <h1 style="text-align: center;">Daily Attendance Summary</h1>
+
+
+    <div class="row">
+    	<div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>NAME</td>
+                    <td th:text="${dayTrackDTO.userSmallResponseDTO.name}"></td>
+                </tr>
+                <tr>
+                    <td>DATE</td>
+                    <td
+                            th:text="${#dates.format(dayTrackDTO.forDate, 'dd-MMM-yyyy')}"></td>
+                </tr>
+                <tr>
+                    <td>OFFICE CODE</td>
+                    <td><span
+                            th:if="${dayTrackDTO.userSmallResponseDTO.officeCodeName != null}"
+                            th:text="${dayTrackDTO.userSmallResponseDTO.officeCodeName}"></span></td>
+
+                </tr>
+
+
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-xs-4"></div>
+
+
+    </div>
+
+
+
+    <table class="table table-striped">
+        <tr>
+            <!-- <th>Date</th>
+            <th>Name</th>
+            <th>Office Code</th> -->
+            <th>Entry Time</th>
+            <th>Exit Time</th>
+            <th>Late</th>
+            <th>Left Early</th>
+            <th>Checked In (Total)</th>
+        </tr>
+
+        <tr>
+
+            <!-- <td th:text="${#dates.format(dayTrackDTO.forDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${dayTrackDTO.userSmallResponseDTO.name}"></td> -->
+
+
+            <td th:text="${#dates.format(dayTrackDTO.inTime, 'hh:mm:ss a')}"></td>
+            <td th:text="${#dates.format(dayTrackDTO.outTime, 'hh:mm:ss a')}"></td>
+            <!-- <td th:text="${attendenceSummary.lateCount}"></td>
+                                                                <td th:text="${attendenceSummary.earlyCount}"></td> -->
+            <td th:with="result=${dayTrackDTO.lateCount/60}"><span
+                    th:text="${result}" th:if="${result != 0}"></span><span
+                    th:if="${result != 0}"> hr </span><span
+                    th:with="resultmin=${dayTrackDTO.lateCount%60}"
+                    th:text="${resultmin}"></span> min</td>
+            <td th:with="result=${dayTrackDTO.earlyCount/60}"><span
+                    th:text="${result}" th:if="${result != 0}"></span><span
+                    th:if="${result != 0}"> hr </span><span
+                    th:with="resultmin=${dayTrackDTO.earlyCount%60}"
+                    th:text="${resultmin}"></span> min</td>
+            <td th:text="${dayTrackDTO.clockCount}"></td>
+
+
+
+
+            <!-- <td th:text="${dayTrackDTO.forDate}"></td>
+
+            <td th:text="${dayTrackDTO.userSmallResponseDTO.officeCodeName}"></td>
+            <td th:text="${dayTrackDTO.inTime}"></td>
+            <td th:text="${dayTrackDTO.outTime}"></td>
+            <td th:text="${dayTrackDTO.lateCount}"></td>
+            <td th:text="${dayTrackDTO.earlyCount}"></td>
+            <td th:text="${dayTrackDTO.clockCount}"></td> -->
+        </tr>
+
+    </table>
+
+    <br> <br>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Company Name</th>
+            <th>Checked In From</th>
+            <th>Time of Scan</th>
+        </tr>
+
+        <tr th:each="attendance : ${attendanceResponse}">
+            <td
+                    th:text="${attendance.userDeviceDTO.userSmallResponseDTO.companyName}"></td>
+            <td th:text="${attendance.userDeviceDTO.location.location}"></td>
+            <!-- <td
+                th:text="${#dates.format(attendence.dateTimeRecord, 'hh:mm:ss a')}"></td> -->
+            <td
+                    th:text="${#dates.format(attendance.dateTimeRecord, 'hh:mm:ss a')}"></td>
+            <!-- <td th:text="${attendance.dateTimeRecord}"></td>  -->
+        </tr>
+
+    </table>
+
+    <!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+</div>
+</body>
+</html>

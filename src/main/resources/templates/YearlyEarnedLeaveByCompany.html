@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Student List</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-4"></div>
+
+        <div class="col-xs-4" align="center">
+
+            <img th:if="${company.logo != null}"
+                 th:src="@{${base_location+company.logo.url}}"
+                 style="max-width: 100%; height: auto;" title="TODO" />
+        </div>
+        <div class="col-xs-4"></div>
+
+
+    </div>
+    <h1 style="text-align: center;">Yearly Earned Leave Summary</h1>
+    <h2 style="text-align: center;">
+        <span th:text="${companyName}"></span>
+    </h2>
+    <table class="table table-striped table-bordered">
+        <tbody>
+        <tr>
+            <th>DEPARTMENT</th>
+            <th>OFFICE CODE</th>
+            <th>YEAR</th>
+            <th>GENERATED ON</th>
+        </tr>
+        <tr>
+            <td th:text="${departmentName}"></td>
+            <td th:text="${officeCode}"></td>
+            <td th:text="${year}"></td>
+            <td th:text="${#dates.format(dateCreated, 'dd-MMM-yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Office Code</th>
+            <th>Designation</th>
+            <th>Grade</th>
+            <th>Consumed Earned Leave</th>
+            <th>Allocated Earned Leave</th>
+        </tr>
+        <tr th:each="response : ${leaveResponse}">
+            <td th:text="${response.user.name}"></td>
+            <td th:text="${response.user.departmentName}"></td>
+            <td th:text="${response.user.officeCodeName}"></td>
+            <td th:text="${response.user.designation}"></td>
+            <td th:text="${response.user.gradeName}"></td>
+            <td th:text="${response.consumed}"></td>
+            <td th:text="${response.allocated}"></td>
+        </tr>
+    </table>
+    <!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+</div>
+</body>
+<style>
+    th {
+        text-align: center;
+    }
+</style>
+</html>

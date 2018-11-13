@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Student List</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        table, td {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4" align="center">
+            <img th:if="${company.logo != null}"
+                 th:src="@{${base_location+company.logo.url}}"
+                 style="max-width: 100%; height: 37px;" title="TODO" />
+        </div>
+        <div class="col-xs-4"></div>
+        <!--  -->
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>NAME</td>
+                    <td
+                            th:text="${user.basicInfo.firstName} + ' ' + ${user.basicInfo.middleName} + ' ' + ${user.basicInfo.lastName}"></td>
+                </tr>
+                <tr>
+                    <td>DESIGNATION</td>
+                    <td th:text="${user.professionalInfo.designation}"></td>
+                </tr>
+                <tr>
+                    <td>OFFICE CODE</td>
+                    <td th:text="${user.officeCode.code}"></td>
+                </tr>
+                <tr>
+                    <td>DATE</td>
+                    <td th:text="${#dates.format(dateOfCreation, 'dd-MMM-yyyy')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-4">
+            <h5 style="text-align: center;">
+                <span th:text="${company.name}"></span>
+            </h5>
+            <h5 style="text-align: center;">MONTHLY EXPENSES BILL</h5>
+        </div>
+        <div class="col-xs-4">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>MONTH</td>
+                    <td th:text="${month}"></td>
+                </tr>
+                <tr>
+                    <td>YEAR</td>
+                    <td th:text="${year}"></td>
+                </tr>
+                <tr>
+                    <td>BDT</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>GRADE</td>
+                    <td th:text="${user.grade.title}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th rowspan="2" style="border: 1px solid #e3ebf3;">Date</th>
+            <th rowspan="2">Institution and Locations</th>
+            <th colspan="3">Allowance</th>
+            <th rowspan="2">Hotel Fare</th>
+            <th rowspan="2">Transport(with Ticket)</th>
+            <th colspan="2">Internal Transport</th>
+            <!-- <th>Internal Transport Fare</th> -->
+            <th rowspan="2">Total</th>
+            <th rowspan="2">Remarks</th>
+            <!-- <th>Qty/unit</th> -->
+            <!-- <th>Rate per BDT</th>
+
+
+                                                     -->
+        </tr>
+        <tr>
+            <th>HQ</th>
+            <th>EX Hq</th>
+            <th>O/S</th>
+            <th>Mode</th>
+            <th>Fare</th>
+        </tr>
+        </thead>
+        <!-- <tr>
+                <td  rowspan="2" >Date</td>
+                <td  rowspan="2" >Institution and Locations</td>
+                <td colspan="3">Allowance</td>
+                <td rowspan="2">Hotel Fare</td>
+                <td rowspan="2">Transport(with Ticket)</td>
+                <td colspan="2">Internal Transport</td>
+                <td>Internal Transport Fare</td>
+                <td rowspan="2">Total</td>
+                <td rowspan="2">Remarks</td>
+                <td>Qty/unit</th>
+                <th>Rate per BDT</th>
+
+
+
+            </tr>
+            <tr>
+                <td>HQ</td>
+                <td>EX Hq</td>
+                <td>O/S</td>
+                <td>Mode</td>
+                <td>Fare</td>
+            </tr> -->
+        <tbody>
+        <tr th:each="allowance : ${allowances}">
+            <td th:text="${allowance.dayOfMonth}"></td>
+            <td th:text="${allowance.destination}"></td>
+            <td th:text="${allowance.hq}"></td>
+            <td th:text="${allowance.exHq}"></td>
+            <td th:text="${allowance.os}"></td>
+            <td th:text="${allowance.hotelFare}"></td>
+            <td th:text="${allowance.transportWithTicket}"></td>
+            <td th:text="${allowance.internalMode}"></td>
+            <td th:text="${allowance.internalFare}"></td>
+            <td></td>
+            <td th:text="${allowance.remarks}"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td colspan="8" style="text-align: center"><b>Total:</b></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>In Words</td>
+            <td colspan="11"><b class="in-word"></b></td>
+        </tr>
+        </tfoot>
+    </table>
+    <div class="row">
+        <div class="col-xs-4">
+            <br /> <br /> <br />
+            <hr />
+            Signature
+        </div>
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <br /> <br /> <br />
+            <hr />
+            Approved By
+        </div>
+    </div>
+    <!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+</div>
+</body>
+<style>
+    thead {
+        display: table-header-group !important;
+    }
+    tfoot {
+        display: table-row-group !important;
+    }
+    tr {
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
+    }
+    td, th {
+        page-break-inside: avoid !important;
+        font-size: 10px;
+        text-align: center;
+    }
+    .table-responsive {
+        overflow: visible !important;
+    }
+</style>
+</html>

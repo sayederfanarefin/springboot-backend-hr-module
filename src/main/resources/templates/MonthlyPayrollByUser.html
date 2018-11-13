@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>Student List</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-4"></div>
+
+        <div class="col-xs-4" align="center">
+
+            <img th:if="${company.logo != null}"
+                 th:src="@{${base_location+company.logo.url}}"
+                 style="max-width: 100%; height: auto;" title="TODO" />
+        </div>
+        <div class="col-xs-4"></div>
+
+
+    </div>
+    <h1 style="text-align: center;">Monthly Payroll Summary</h1>
+    <h2 style="text-align: center;">
+        <span th:text="${company.name}"></span>
+    </h2>
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <tbody>
+                    <tr>
+                        <td><b>Name</b></td>
+                        <td><span th:text="${paidToUser.name}"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Company Name</b></td>
+                        <td><span th:text="${paidToUser.companyName}"></span></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Department</b></td>
+                        <td><span th:text="${paidToUser.departmentName}"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Office Code</b></td>
+                        <td><span th:if="${paidToUser.officeCodeName != null}"
+                                  th:text="${paidToUser.officeCodeName}"></span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Month</b></td>
+                        <td th:text="${month}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Year</b></td>
+                        <td th:text="${year}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Per Day Salary</b></td>
+
+                        <td>BDT <span class="per-day-salary"
+                                      th:if="${dto.perDaySalary != 0}"
+                                      th:text="${#numbers.formatDecimal(dto.perDaySalary, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.perDaySalary == 0}">0.00</span>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th colspan="2" style="text-align: center;">Payroll Summary</th>
+
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td><b>Basic Salary</b></td>
+                        <td style="color:green">BDT <span th:if="${dto.salaryAmount != 0}"
+                                                          th:text="${#numbers.formatDecimal(dto.salaryAmount, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.salaryAmount == 0}">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Allowance</b></td>
+                        <td style="color:green">BDT <span
+                                th:if="${dto.approvedAllowance != 0}"
+                                th:text="${#numbers.formatDecimal(dto.approvedAllowance, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.approvedAllowance == 0}">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Leave Bonus</b></td>
+                        <td style="color:green">BDT <span class="earnleave-bonus-text"
+                                                          th:if="${dto.earnedLeaveBonus != 0}"
+                                                          th:text="${#numbers.formatDecimal(dto.earnedLeaveBonus, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.earnedLeaveBonus == 0}" class="earnleave-bonus-text">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Late Penalty</b></td>
+                        <td style="color:red">BDT <span th:if="${dto.latePenalty != 0}" class="late-penalty-text"
+                                                        th:text="${#numbers.formatDecimal(dto.latePenalty, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.latePenalty == 0}" class="late-penalty-text">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Absent Penalty</b></td>
+                        <td style="color:red">BDT <span th:if="${dto.absentPenalty != 0}" class="absent-penalty-text"
+                                                        th:text="${#numbers.formatDecimal(dto.absentPenalty, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.absentPenalty == 0}" class="absent-penalty-text">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Leave Penalty</b></td>
+                        <td style="color:red">
+                            BDT <span th:if="${dto.leavePenalty != 0}" class="leave-penalty-text"
+                                      th:text="${#numbers.formatDecimal(dto.leavePenalty, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.leavePenalty == 0}" class="leave-penalty-text">0.00</span>
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: center;">Basic Salary</th>
+
+
+                    </tr>
+                    <tr>
+                        <th>Breakdown Title</th>
+                        <th>BreakDownType</th>
+                        <th>Amount</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="temp,iterator: ${dto.breakdowns}">
+
+                        <td><span th:text="${temp.breakdown.title}"></span></td>
+                        <td><span th:text="${temp.breakdown.percentage}"></span>%</td>
+                        <td>BDT <span th:if="${temp.amount != 0}"
+                                      th:text="${#numbers.formatDecimal(temp.amount, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${temp.amount == 0}">0.00</span>
+
+
+
+                        </td>
+
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: center;">Allowance Summary</th>
+
+
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td><span>Approved Allowance</span></td>
+
+                        <td>BDT <span th:if="${dto.approvedAllowance != 0}"
+                                      th:text="${#numbers.formatDecimal(dto.approvedAllowance, 0, 'COMMA', 2, 'POINT')}"></span>
+
+                            <span th:if="${dto.approvedAllowance == 0}">0.00</span>
+
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: center;">Earn Leave</th>
+
+
+                    </tr>
+                    <tr>
+                        <th>Leave Type</th>
+
+                        <th>Leave count</th>
+                        <th>Leave Bonus</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>Earned Leave</td>
+                        <td><span th:if="${dto.createdOn  != null}"> <span
+                                th:text="${dto.accountedEarnedLeaves}"></span>
+
+
+
+								</span> <span th:if="${dto.createdOn == null}"> <span
+                                th:text="${dto.unaccountedEarnedLeaveCount}"></span>
+
+								</span></td>
+
+                        <td>BDT <span
+                                    th:if="${dto.earnedLeaveBonus != 0}"
+                                    th:text="${#numbers.formatDecimal(dto.earnedLeaveBonus, 0, 'COMMA', 2, 'POINT')}"></span>
+                                <span
+                                th:if="${dto.earnedLeaveBonus == 0}">0.00</span>
+                        </td>
+                        <!--<td th:text="${dto.earnedLeaveBonus}"></td>-->
+
+
+
+
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th colspan="4" style="text-align: center;">Attendance Summary</th>
+
+
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>Absent</td>
+                        <td th:text="${dto.absentCount}"></td>
+
+                    </tr>
+                    <tr>
+
+                        <td>Late</td>
+                        <td th:text="${dto.lateCount}"></td>
+
+
+
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="table-responsive">
+                <table id="penalty-summary" class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th colspan="4" style="text-align: center;">Penalty Summary</th>
+                    </tr>
+                    <tr>
+                        <th>Penalty Type</th>
+
+                        <th>Count</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td>Late Penalty</td>
+                        <td th:text="${dto.lateCount}">
+                            <!-- <input type="number" class="form-control late"
+                            th:field="*{payrollDTO.late}" /> -->
+                        </td>
+                        <td >
+                            BDT <span th:if="${dto.latePenalty != 0}" class="leave-penalty-text"
+                                      th:text="${#numbers.formatDecimal(dto.latePenalty, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.latePenalty == 0}" class="leave-penalty-text">0.00</span>
+                        </td>
+
+
+
+                    </tr>
+                    <tr>
+
+                        <td>Absent Penalty</td>
+                        <td th:text="${dto.absentCount}"></td>
+
+                        <td >
+                            BDT <span th:if="${dto.absentPenalty != 0}" class="leave-penalty-text"
+                                      th:text="${#numbers.formatDecimal(dto.absentPenalty, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.absentPenalty == 0}" class="leave-penalty-text">0.00</span>
+                        </td>
+                        <!-- <td><input type="number" class="form-control absentpenalty"
+                            step="any" th:field="*{payrollDTO.absentPenalty}" /></td>
+-->
+                    </tr>
+                    <tr>
+
+                        <td>Leave penalty</td>
+                        <td>-</td>
+
+                        <td>
+
+                            BDT <span th:if="${dto.leavePenalty != 0}" class="leave-penalty-text"
+                                      th:text="${#numbers.formatDecimal(dto.leavePenalty, 0, 'COMMA', 2, 'POINT')}"></span>
+                            <span th:if="${dto.leavePenalty == 0}" class="leave-penalty-text">0.00</span>
+                        </td>
+                        <!-- <td><input type="number" class="form-control leavepenalty"
+                            th:field="*{payrollDTO.leavePenalty}" /></td> -->
+
+
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+</div>
+</body>
+</html>

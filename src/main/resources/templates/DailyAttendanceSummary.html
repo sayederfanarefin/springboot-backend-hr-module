@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sf="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<title>Student List</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-xs-4"></div>
+
+			<div class="col-xs-4" align="center">
+
+				<img th:if="${company.logo != null}"
+					th:src="@{${base_location+company.logo.url}}"
+					style="max-width: 100%; height: auto;" title="TODO" />
+			</div>
+			<div class="col-xs-4"></div>
+
+
+		</div>
+		<h1 style="text-align: center;">Daily Attendance Summary</h1>
+		<h2 style="text-align: center;">
+			<span th:text="${companyName}"></span>
+		</h2>
+		<div class="row">
+			<div class="col-xs-4"></div>
+			<div class="col-xs-4">
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td>DEPARTMENT</td>
+							<td th:text="${departmentName}"></td>
+						</tr>
+						<tr>
+							<td>OFFICE CODE</td>
+							<td th:text="${officeCode}"></td>
+						</tr>
+						<tr>
+							<td>DATE</td>
+							<td th:text="${fromDate}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-xs-4"></div>
+		</div>
+		<h3 style="text-align: center;">Absent</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Office Code</th>
+				<th>Designation</th>
+				<th>Grade</th>
+			</tr>
+			<tr th:each="userSmallResponseDTO : ${absent}">
+				<td th:text="${userSmallResponseDTO.name}"></td>
+				<td th:text="${userSmallResponseDTO.departmentName}"></td>
+				<td th:text="${userSmallResponseDTO.officeCodeName}"></td>
+				<td th:text="${userSmallResponseDTO.designation}"></td>
+				<td th:text="${userSmallResponseDTO.gradeName}"></td>
+			</tr>
+		</table>
+		<h3 style="text-align: center;">Late</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Office Code</th>
+				<th>Entry Time</th>
+				<th>Exit Time</th>
+				<th>Late</th>
+			</tr>
+			<tr th:each="summary : ${late}">
+				<td th:text="${summary.userSmallResponseDTO.name}"></td>
+				<td th:text="${summary.userSmallResponseDTO.departmentName}"></td>
+				<td th:text="${summary.userSmallResponseDTO.officeCodeName}"></td>
+				<!-- <td th:text="${summary.inTime}"></td>
+				<td th:text="${summary.outTime}"></td>
+				<td th:text="${summary.lateCount}"></td> -->
+
+				<td th:text="${#dates.format(summary.inTime, 'hh:mm:ss a')}"></td>
+				<td th:text="${#dates.format(summary.outTime, 'hh:mm:ss a')}"></td>
+				<td th:with="result=${summary.lateCount/60}"><span
+					th:text="${result}" th:if="${result != 0}"></span><span
+					th:if="${result != 0}"> hr </span><span
+					th:with="resultmin=${summary.lateCount%60}" th:text="${resultmin}"></span>
+					min</td>
+			</tr>
+		</table>
+		<h3 style="text-align: center;">Left Early</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Office Code</th>
+				<th>Entry Time</th>
+				<th>Exit Time</th>
+				<th>Left Early</th>
+			</tr>
+			<tr th:each="summary : ${leftEarly}">
+				<td th:text="${summary.userSmallResponseDTO.name}"></td>
+				<td th:text="${summary.userSmallResponseDTO.departmentName}"></td>
+				<td th:text="${summary.userSmallResponseDTO.officeCodeName}"></td>
+				<td th:text="${#dates.format(summary.inTime, 'hh:mm:ss a')}"></td>
+				<td th:text="${#dates.format(summary.outTime, 'hh:mm:ss a')}"></td>
+
+				<td th:with="result=${summary.earlyCount/60}"><span
+					th:text="${result}" th:if="${result != 0}"></span><span
+					th:if="${result != 0}"> hr </span><span
+					th:with="resultmin=${summary.earlyCount%60}" th:text="${resultmin}"></span>
+					min</td>
+			</tr>
+		</table>
+		<h3 style="text-align: center;">Present</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Office Code</th>
+				<th>Entry Time</th>
+				<th>Exit Time</th>
+				<th>Late</th>
+				<th>Left Early</th>
+				<th>Checked In (Total)</th>
+			</tr>
+			<tr th:each="summary : ${present}">
+				<td th:text="${summary.userSmallResponseDTO.name}"></td>
+				<td th:text="${summary.userSmallResponseDTO.departmentName}"></td>
+				<td th:text="${summary.userSmallResponseDTO.officeCodeName}"></td>
+				<td th:text="${#dates.format(summary.inTime, 'hh:mm:ss a')}"></td>
+				<td th:text="${#dates.format(summary.outTime, 'hh:mm:ss a')}"></td>
+				<td th:with="result=${summary.lateCount/60}"><span
+					th:text="${result}" th:if="${result != 0}"></span><span
+					th:if="${result != 0}"> hr </span><span
+					th:with="resultmin=${summary.lateCount%60}" th:text="${resultmin}"></span>
+					min</td>
+				<td th:with="result=${summary.earlyCount/60}"><span
+					th:text="${result}" th:if="${result != 0}"></span><span
+					th:if="${result != 0}"> hr </span><span
+					th:with="resultmin=${summary.earlyCount%60}" th:text="${resultmin}"></span>
+					min</td>
+				<td th:text="${summary.clockCount}"></td>
+			</tr>
+		</table>
+		<!--<a th:href="@{/getStudentsListAsPdf}">Download Pdf</a>-->
+	</div>
+</body>
+<style>
+th {
+	text-align: center;
+}
+</style>
+</html>
